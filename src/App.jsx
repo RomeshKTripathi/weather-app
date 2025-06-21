@@ -85,15 +85,7 @@ function ForecastCard({ forecast, date }) {
         maxwind_mph,
     } = forecast;
     const { icon, text } = forecast.condition;
-    const weekday = [
-        "Sunday",
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-    ];
+    const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const currentDate = new Date(date);
     return (
         <>
