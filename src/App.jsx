@@ -2,7 +2,7 @@ import { day_blizzard } from "./assets/index.js";
 
 function App() {
     return (
-        <div className=" bg-[url('../public/clouds.jpg')] bg-cover h-screen text-neutral-200 ">
+        <div className=" bg-[url('../public/clouds.jpg')] bg-cover h-screen text-neutral-200 overflow-auto">
             <div className="p-4 lg:w-3/5 lg:mx-auto">
                 <LocationDate />
                 <div className="flex flex-col max-md:gap-8 md:flex-row gap-4 justify-between items-center  ">
