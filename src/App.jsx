@@ -10,7 +10,7 @@ function App() {
 
     return (
         <div
-            className={` bg-[url('../public/day_clean.jpg')] bg-cover h-screen text-neutral-200 overflow-auto`}
+            className={` max-md:bg-[url('../public/day_clean.jpg')] md:bg-[url('../public/clean_weather.jpg')] bg-cover h-screen text-neutral-200 overflow-auto`}
         >
             {!weatherLoading && (
                 <div className="p-4 lg:w-3/5 lg:mx-auto">
@@ -133,7 +133,6 @@ function CurrentStats({ forecast }) {
         forecast;
 
     const [sun, loading] = getSun();
-    console.log("Forecast card", sun);
 
     return (
         <div className="w-full  flex justify-between">

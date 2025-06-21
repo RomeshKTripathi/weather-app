@@ -17,7 +17,7 @@ export function getCurrentWeather() {
                 },
             })
             .then((response) => {
-                console.log(response.data);
+                // console.log(response.data);
                 setCurrentWeather(response.data);
             })
             .catch((err) => {
@@ -38,7 +38,6 @@ export function getSun() {
                 params: { q: "India", key: "3ff9e951a96c46d0ba632912252106" },
             })
             .then((response) => {
-                console.log(response.data);
                 setSun(response.data.astronomy);
             })
             .catch((err) => {
