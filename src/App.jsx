@@ -24,7 +24,7 @@ function App() {
         setQuery(location);
     };
     return (
-        <div className="relative w-screen min-h-full  overflow-x-hidden">
+        <div className="relative w-screen h-dvh  overflow-x-hidden">
             {error?.message && (
                 <ErrorOccured
                     clearError={clearError}
