@@ -3,7 +3,7 @@ function TodayForecast({ forecast }) {
     const { icon, text } = forecast.condition;
     const current = new Date(time);
     const currentTime = current.getHours() + ":" + current.getMinutes();
-
+    
     return (
         <div
             className={`flex animate-fade-up shrink-0 flex-col items-center p-2 rounded-md bg-black/50 text-white border-black`}
