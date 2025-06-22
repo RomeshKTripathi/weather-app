@@ -33,7 +33,7 @@ function App() {
             )}
             <ChangeLocation handleSetQuery={handleSetQuery} />
             <div
-                className={`max-md:bg-[url('../public/day_clean.jpg')] md:bg-[url('../public/clean_weather.jpg')] bg-cover h-screen text-neutral-200 overflow-auto`}
+                className={`max-md:bg-[url('../public/day_clean.jpg')] md:bg-[url('../public/clean_weather.jpg')] bg-cover h-full text-neutral-200 overflow-auto`}
             >
                 {!weatherLoading && (
                     <div className="relative p-4 lg:w-3/5 lg:mx-auto">
@@ -161,7 +161,7 @@ function ChangeLocation({ handleSetQuery }) {
             <div
                 className={`absolute ${
                     openSearch ? "translate-y-0" : "-translate-y-full"
-                } duration-200 ease-out w-screen h-screen bg-black/90 z-10 top-0 right-0`}
+                } duration-200 ease-out w-screen min-h-dvh bg-black/90 z-10 top-0 right-0`}
             >
                 <div className="w-full relative h-full flex items-center justify-center p-8">
                     <div
