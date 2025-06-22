@@ -12,7 +12,7 @@ export function getCurrentWeather() {
             .get(url + "/forecast.json", {
                 params: {
                     days: 5,
-                    q: "India",
+                    q: "Mathura",
                     key: "3ff9e951a96c46d0ba632912252106",
                 },
             })
@@ -35,7 +35,10 @@ export function getSun() {
     useEffect(() => {
         axios
             .get(url + "/astronomy.json", {
-                params: { q: "India", key: "3ff9e951a96c46d0ba632912252106" },
+                params: {
+                    q: userLocation(),
+                    key: "3ff9e951a96c46d0ba632912252106",
+                },
             })
             .then((response) => {
                 setSun(response.data.astronomy);
@@ -48,4 +51,22 @@ export function getSun() {
             });
     }, []);
     return [sun, loading];
+}
+
+function userLocation() {
+    const location = null;
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const { latitude, longitude } = position.coords;
+                location = { latitude, longitude };
+            },
+            (error) => {
+                console.error("Error getting user location:", error);
+            }
+        );
+    } else {
+        console.error("Geolocation is not supported by this browser.");
+    }
+    return location ?? "India";
 }

@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 /* width */
 ::-webkit-scrollbar {
     width: 2px;
@@ -17,4 +18,51 @@
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
     background: #55555563;
+}
+@theme {
+    --animate-appear-left: appear-left 500ms ease-in;
+    --animate-appear-right: appear-right 500ms ease-in;
+    --animate-appear-up: appear-up 500ms ease-in;
+    --animate-fade-up: fade-up 500ms ease-in;
+
+    @keyframes fade-up {
+        0% {
+            transform: scale(0.8);
+            opacity: 0;
+        }
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+    @keyframes appear-left {
+        0% {
+            transform: translateX(20%);
+            opacity: 0;
+        }
+        100% {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    @keyframes appear-right {
+        0% {
+            transform: translateX(-20%);
+            opacity: 0;
+        }
+        100% {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    @keyframes appear-up {
+        0% {
+            transform: translateY(20%);
+            opacity: 0;
+        }
+        100% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
 }
