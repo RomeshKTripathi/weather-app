@@ -161,7 +161,7 @@ function ChangeLocation({ handleSetQuery }) {
             <div
                 className={`absolute ${
                     openSearch ? "translate-y-0" : "-translate-y-full"
-                } duration-200 ease-out w-screen min-h-dvh bg-black/90 z-10 top-0 right-0`}
+                } duration-200 ease-out w-screen h-dvh bg-black/90 z-10 top-0 right-0`}
             >
                 <div className="w-full relative h-full flex items-center justify-center p-8">
                     <div
