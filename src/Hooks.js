@@ -54,7 +54,7 @@ export function getSun() {
 }
 
 function userLocation() {
-    const location = null;
+    let location = null;
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
             (position) => {
