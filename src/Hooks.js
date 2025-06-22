@@ -33,24 +33,27 @@ export function getCurrentWeather() {
     const [currentWeather, setCurrentWeather] = useState({});
     const [loading, setLoading] = useState(true);
     useEffect(() => {
-        axios
-            .get(url + "/forecast.json", {
-                params: {
-                    days: 5,
-                    q: userLocation(),
-                    key: "3ff9e951a96c46d0ba632912252106",
-                },
-            })
-            .then((response) => {
-                // console.log(response.data);
-                setCurrentWeather(response.data);
-            })
-            .catch((err) => {
-                console.log("Error occured:", err);
-            })
-            .finally(() => {
-                setLoading(false);
-            });
+        async function fetchWeather() {
+            axios
+                .get(url + "/forecast.json", {
+                    params: {
+                        days: 5,
+                        q: await userLocation(),
+                        key: "3ff9e951a96c46d0ba632912252106",
+                    },
+                })
+                .then((response) => {
+                    // console.log(response.data);
+                    setCurrentWeather(response.data);
+                })
+                .catch((err) => {
+                    console.log("Error occured:", err);
+                })
+                .finally(() => {
+                    setLoading(false);
+                });
+        }
+        fetchWeather();
     }, []);
     return [currentWeather, loading];
 }
@@ -58,41 +61,44 @@ export function getSun() {
     const [sun, setSun] = useState({});
     const [loading, setLoading] = useState(true);
     useEffect(() => {
-        axios
-            .get(url + "/astronomy.json", {
-                params: {
-                    q: userLocation(),
-                    key: "3ff9e951a96c46d0ba632912252106",
-                },
-            })
-            .then((response) => {
-                setSun(response.data.astronomy);
-            })
-            .catch((err) => {
-                console.log(err);
-            })
-            .finally(() => {
-                setLoading(false);
-            });
+        async function fetchData() {
+            axios
+                .get(url + "/astronomy.json", {
+                    params: {
+                        q: await userLocation(),
+                        key: "3ff9e951a96c46d0ba632912252106",
+                    },
+                })
+                .then((response) => {
+                    setSun(response.data.astronomy);
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
+                .finally(() => {
+                    setLoading(false);
+                });
+        }
+        fetchData();
     }, []);
     return [sun, loading];
 }
 
-function userLocation() {
-    let location = null;
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                const { latitude, longitude } = position.coords;
-                location = { latitude, longitude };
-                console.log(location);
-            },
-            (error) => {
-                console.error("Error getting user location:", error);
-            }
-        );
-    } else {
+async function userLocation() {
+    if (!navigator.geolocation) {
         console.error("Geolocation is not supported by this browser.");
+        return "Agra";
     }
-    return location ?? "India";
+
+    try {
+        const position = await new Promise((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(resolve, reject);
+        });
+
+        const { latitude, longitude } = position.coords;
+        return latitude + "," + longitude;
+    } catch (error) {
+        console.error("Error getting user location:", error);
+        return "Agra";
+    }
 }
