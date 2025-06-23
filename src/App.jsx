@@ -19,7 +19,6 @@ const options = {
 function App() {
     const [query, setQuery] = useState("New Delhi");
     const [settings, dispatch] = useReducer(settingsReducer, { isDay: 0 });
-    console.log(settings.isDay);
 
     const {
         data: weather,
@@ -28,12 +27,10 @@ function App() {
         clearError,
     } = useFetchData("/forecast.json", { q: query, days: 5 });
     const currentTime = weather?.location.localtime;
-    console.log(weather);
 
     useEffect(() => {
         if (!weatherLoading && weather) {
             dispatch({ type: "IS_DAY", isDay: weather.current.is_day });
-            console.log("Currently day : ", weather.current.is_day);
         }
     }, [weather, weatherLoading]);
 
@@ -148,7 +145,7 @@ function CurrentTemprature({ icon, text = "Mostly Sunny", temp = "21" }) {
     return (
         <div className="flex w-full items-center gap-4 md:my-4 ">
             <div className="w-1/2 flex justify-center items-center animate-fade-up">
-                {<img className="w-full md:scale-150 scale-125" src={icon} />}
+                {<img className="w-full lg:scale-150 scale-110" src={icon} />}
             </div>
             <div className="w-1/2 flex flex-col justify-center items-center animate-fade-up">
                 <div className="text-6xl font-thin ">

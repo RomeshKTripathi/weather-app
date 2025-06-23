@@ -19,8 +19,8 @@ function ForecastCard({ forecast, date }) {
             <div
                 className={`flex shrink-0 animate-appear-up max-md:flex-col justify-evenly md:w-full items-center p-2 rounded-md ${
                     settings.isDay
-                        ? "bg-gradient-to-r from-amber-500/20 to-yellow-400/20"
-                        : "bg-gradient-to-r from-blue-400/15 to-violet-400/15"
+                        ? "max-md:bg-gradient-to-r from-amber-500/20 to-yellow-400/20"
+                        : "max-md:bg-gradient-to-r from-blue-400/15 to-violet-400/15"
                 } backdrop-blur-sm`}
             >
                 <div>
