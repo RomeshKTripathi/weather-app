@@ -42,7 +42,7 @@ function ChangeLocation({ handleSetQuery }) {
                 className={`absolute ${
                     openSearch ? "translate-y-0" : "-translate-y-full"
                 } duration-200 ease-out w-screen h-dvh ${
-                    settings.isDay ? "bg-white/10" : "bg-black/10"
+                    settings.isDay ? "bg-white/10 " : "bg-black/10"
                 } backdrop-blur-md z-10 top-0 right-0`}
             >
                 <div className="w-full relative h-full flex items-center justify-center p-8">
@@ -61,11 +61,19 @@ function ChangeLocation({ handleSetQuery }) {
                             onChange={(e) => {
                                 setInput(e.target.value);
                             }}
-                            className="border-b border-white/50 text-white outline-none"
+                            className={`border-b ${
+                                settings.isDay
+                                    ? "border-neutral-600 text-neutral-800"
+                                    : "border-white/50 text-neutral-100"
+                            } outline-none `}
                         />
                         <button
                             onClick={handleSearchClick}
-                            className="block py-2 text-neutral-100  hover:bg-white/10 cursor-pointer rounded-md border border-white/50 text-lg text-center "
+                            className={`block py-2 ${
+                                settings.isDay
+                                    ? "text-neutral-800 border-neutral-600"
+                                    : "text-neutral-100 border-white/50"
+                            }  hover:bg-white/10 cursor-pointer rounded-md border  text-lg text-center`}
                             type="submit"
                         >
                             Search

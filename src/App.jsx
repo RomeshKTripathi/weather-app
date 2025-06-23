@@ -18,7 +18,7 @@ const options = {
 };
 function App() {
     const [query, setQuery] = useState("New Delhi");
-    const [settings, dispatch] = useReducer(settingsReducer, { isDay: 1 });
+    const [settings, dispatch] = useReducer(settingsReducer, { isDay: 0 });
     console.log(settings.isDay);
 
     const {
@@ -32,9 +32,10 @@ function App() {
 
     useEffect(() => {
         if (!weatherLoading && weather) {
-            // dispatch({ type: "IS_DAY", isDay: weather.current.is_day });
+            dispatch({ type: "IS_DAY", isDay: weather.current.is_day });
+            console.log("Currently day : ", weather.current.is_day);
         }
-    }, [weatherLoading]);
+    }, [weather]);
 
     const equalHours = (t1, t2) => {
         const d1 = new Date(t1);
