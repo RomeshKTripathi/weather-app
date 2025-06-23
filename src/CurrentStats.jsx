@@ -1,4 +1,5 @@
 import { getSun } from "./Hooks";
+import { GradientText } from "./Utilities";
 
 function CurrentStats({ forecast }) {
     const { maxtemp_c, mintemp_c, daily_chance_of_rain, maxwind_mph } =
@@ -9,46 +10,34 @@ function CurrentStats({ forecast }) {
     return (
         <div className="w-full  flex justify-between ">
             <div className="flex flex-col gap-4">
-                <div>
-                    <span className="text-xl block">{maxtemp_c}&deg;C</span>
-                    <span className="font-thin">High</span>
-                </div>
-                <div>
-                    <span className="text-xl block">{mintemp_c}&deg;C</span>
-                    <span className="font-thin">Low</span>
-                </div>
+                <Entry temp={true} value={maxtemp_c} title="High" />
+                <Entry temp={true} value={mintemp_c} title="Low" />
             </div>
             <div className="flex flex-col gap-4">
-                <div>
-                    <span className="text-xl block">{maxwind_mph}mph</span>
-                    <span className="font-thin">Wind</span>
-                </div>
-                <div>
-                    <span className="text-xl block">
-                        {daily_chance_of_rain}%
-                    </span>
-                    <span className="font-thin">Rain</span>
-                </div>
+                <Entry value={maxwind_mph + "mph"} title="Wind" />
+                <Entry value={daily_chance_of_rain + "%"} title={"Rain"} />
             </div>
             {!loading && (
                 <div className="flex flex-col gap-4">
-                    <div>
-                        <span className="text-xl block">
-                            {sun.astro.sunrise}
-                        </span>
-                        <span className="font-thin">Sunrise</span>
-                    </div>
-
-                    <div>
-                        <span className="text-xl block">
-                            {sun.astro.sunset}
-                        </span>
-                        <span className="font-thin">Sunset</span>
-                    </div>
+                    <Entry value={sun.astro.sunrise} title={"Sunrise"} />
+                    <Entry value={sun.astro.sunset} title={"Sunset"} />
                 </div>
             )}
         </div>
     );
 }
 
+function Entry({ value, title, temp }) {
+    return (
+        <div>
+            <span className="text-lg font-medium md:text-xl block">
+                <GradientText>
+                    {value}
+                    {temp && <span>&deg;C</span>}
+                </GradientText>
+            </span>
+            <span className="max-md:text-xs ">{title}</span>
+        </div>
+    );
+}
 export default CurrentStats;

@@ -1,3 +1,7 @@
+import { useContext } from "react";
+import { Icons } from "./assets";
+import { Settings } from "./SettingsContext";
+
 function ForecastCard({ forecast, date }) {
     const {
         avgtemp_c,
@@ -6,18 +10,19 @@ function ForecastCard({ forecast, date }) {
         mintemp_c,
         maxwind_mph,
     } = forecast;
-    const { icon, text } = forecast.condition;
+    const settings = useContext(Settings);
+    const { code, icon, text } = forecast.condition;
     const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const currentDate = new Date(date);
     return (
         <>
-            <div className="flex shrink-0 animate-appear-up max-md:flex-col justify-evenly md:w-full text-white items-center p-2 max-md:rounded-md max-md:bg-black/30 ">
+            <div className="flex shrink-0 animate-appear-up max-md:flex-col justify-evenly md:w-full items-center p-2 max-md:rounded-md max-md:bg-black/30 ">
                 <div>
                     <div>{weekday[currentDate.getDay()]}</div>
                     <div className="max-md:hidden">{date}</div>
                 </div>
                 <div>
-                    <img src={icon ?? day_blizzard} alt="Weather Icon" />
+                    <img src={Icons[code][settings.isDay]} alt="Weather Icon" />
                 </div>
                 <div className="max-md:hidden">
                     <div>{mintemp_c}&deg;C</div>
