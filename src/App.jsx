@@ -5,7 +5,7 @@ import ForecastCard from "./ForcastCard.jsx";
 import useFetchData from "./Hooks.js";
 import TodayForecast from "./TodayForcast.jsx";
 import Background from "./Background.jsx";
-import { GradientText } from "./Utilities.jsx";
+import { CancelIcon, GradientText } from "./Utilities.jsx";
 import { settingsReducer } from "./SettingsReducer.js";
 import { Settings } from "./SettingsContext.js";
 import { Icons } from "./assets/index.js";
@@ -35,7 +35,7 @@ function App() {
             dispatch({ type: "IS_DAY", isDay: weather.current.is_day });
             console.log("Currently day : ", weather.current.is_day);
         }
-    }, [weather]);
+    }, [weather, weatherLoading]);
 
     const equalHours = (t1, t2) => {
         const d1 = new Date(t1);
@@ -48,7 +48,7 @@ function App() {
     };
     return (
         <Settings value={settings}>
-            <div className="relative w-screen h-dvh  overflow-x-hidden">
+            <div className="relative w-screen h-dvh select-none overflow-x-hidden">
                 <Background />
                 {error?.message && (
                     <ErrorOccured

@@ -30,13 +30,11 @@ function CurrentStats({ forecast }) {
 function Entry({ value, title, temp }) {
     return (
         <div>
-            <span className="text-lg font-medium md:text-xl block">
-                <GradientText>
-                    {value}
-                    {temp && <span>&deg;C</span>}
-                </GradientText>
+            <span className="text-lg font-light md:text-xl block">
+                {value}
+                {temp && <span>&deg;C</span>}
             </span>
-            <span className="max-md:text-xs ">{title}</span>
+            <span className="max-md:text-xs text-sm">{title}</span>
         </div>
     );
 }

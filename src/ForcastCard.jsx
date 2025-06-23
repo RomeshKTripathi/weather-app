@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Icons } from "./assets";
+import { condition, Icons, style } from "./assets";
 import { Settings } from "./SettingsContext";
 
 function ForecastCard({ forecast, date }) {
@@ -16,9 +16,17 @@ function ForecastCard({ forecast, date }) {
     const currentDate = new Date(date);
     return (
         <>
-            <div className="flex shrink-0 animate-appear-up max-md:flex-col justify-evenly md:w-full items-center p-2 max-md:rounded-md max-md:bg-black/30 ">
+            <div
+                className={`flex shrink-0 animate-appear-up max-md:flex-col justify-evenly md:w-full items-center p-2 rounded-md ${
+                    settings.isDay
+                        ? "bg-gradient-to-r from-amber-500/20 to-yellow-400/20"
+                        : "bg-gradient-to-r from-blue-400/15 to-violet-400/15"
+                } backdrop-blur-sm`}
+            >
                 <div>
-                    <div>{weekday[currentDate.getDay()]}</div>
+                    <div className="font-medium">
+                        {weekday[currentDate.getDay()]}
+                    </div>
                     <div className="max-md:hidden">{date}</div>
                 </div>
                 <div>
