@@ -33,18 +33,7 @@ export function GradientText({ children }) {
 }
 
 export function Headings({ children }) {
-    const { isDay } = useContext(Weather);
-    return (
-        <span
-            className={`font-bold text-2xl md:text-3xl ${
-                isDay
-                    ? "bg-gradient-to-r from-blue-900 via-violet-600 to-indigo-500"
-                    : "bg-gradient-to-r from-amber-500 to-red-600"
-            } bg-clip-text text-transparent`}
-        >
-            {children}
-        </span>
-    );
+    return <span>{children}</span>;
 }
 
 export function CancelIcon() {
