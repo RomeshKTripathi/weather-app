@@ -58,8 +58,8 @@ function App() {
                 <div
                     className={` ${
                         store.isDay
-                            ? "md:bg-[url('./public/big_clean_weather.jpg')] max-md:bg-[url('./public/small_day_clean.jpg')] text-neutral-900"
-                            : "md:bg-[url('./public/big_night_clean.jpg')] max-md:bg-[url('./public/small_night_clean.jpg')] text-neutral-100"
+                            ? "md:bg-[url('../public/big_clean_weather.jpg')] max-md:bg-[url('../public/small_day_clean.jpg')] text-neutral-900"
+                            : "md:bg-[url('../public/big_night_clean.jpg')] max-md:bg-[url('../public/small_night_clean.jpg')] text-neutral-100"
                     } relative   bg-cover h-full  overflow-auto`}
                 >
                     <ChangeLocation handleSetQuery={handleSetQuery} />
