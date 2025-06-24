@@ -76,12 +76,10 @@ function ForecastCard({ forecast, date, onclick, index, outlined = false }) {
                     console.log("Clicked - ", index);
                     onclick(index);
                 }}
-                className={`flex shrink-0 animate-appear-up max-md:flex-col justify-evenly md:w-full items-center p-2 rounded-md border-4 border-transparent ${
-                    outlined ? " border-yellow-400/70" : ""
+                className={`flex shrink-0 animate-appear-up box-border max-md:flex-col justify-evenly md:w-full items-center p-2 rounded-md  border-4  ${
+                    outlined ? " border-yellow-400/70" : "border-transparent"
                 }  ${
-                    isDay
-                        ? "max-md:bg-gradient-to-r from-amber-500/20 to-yellow-400/20"
-                        : "max-md:bg-black/10"
+                    isDay ? "max-md:bg-yellow-400/20" : "max-md:bg-black/10"
                 } backdrop-blur-sm`}
             >
                 <div>
