@@ -1,9 +1,9 @@
 import { useContext, useState, useRef } from "react";
-import { Settings } from "./SettingsContext";
+import { Weather } from "./Context";
 import { CancelIcon } from "./Utilities";
 
 function ChangeLocation({ handleSetQuery }) {
-    const settings = useContext(Settings);
+    const { isDay } = useContext(Weather);
     const [input, setInput] = useState("");
     const [openSearch, setOpenSearch] = useState(false);
     const ref = useRef(null);
@@ -26,7 +26,7 @@ function ChangeLocation({ handleSetQuery }) {
                 className={`absolute ${
                     openSearch ? "hidden" : ""
                 } top-6 right-4 md:top-6 z-10 size-[40px] flex items-center justify-center rounded-full hover:bg-white/10 ${
-                    settings.isDay ? "fill-neutral-800" : "fill-neutral-100"
+                    isDay ? "fill-neutral-800" : "fill-neutral-100"
                 } transition-colors duration-200 cursor-pointer `}
             >
                 <svg
@@ -43,14 +43,14 @@ function ChangeLocation({ handleSetQuery }) {
                 className={`absolute ${
                     openSearch ? "translate-y-0" : "-translate-y-full"
                 } duration-200 ease-out w-screen h-dvh ${
-                    settings.isDay ? "bg-white/10 " : "bg-black/10"
+                    isDay ? "bg-white/10 " : "bg-black/10"
                 } backdrop-blur-md z-10 top-0 right-0`}
             >
                 <div className="w-full relative h-full flex items-center justify-center p-8">
                     <div
                         onClick={handleOpenSearch}
                         className={`absolute cursor-pointer top-8 right-6 max-md:size-8 flex items-center justify-center bg-white/20 rounded-full ${
-                            settings.isDay ? "fill-neutral-800" : "fill-white"
+                            isDay ? "fill-neutral-800" : "fill-white"
                         }`}
                     >
                         <CancelIcon />
@@ -63,7 +63,7 @@ function ChangeLocation({ handleSetQuery }) {
                                 setInput(e.target.value);
                             }}
                             className={`border-b ${
-                                settings.isDay
+                                isDay
                                     ? "border-neutral-600 text-neutral-800"
                                     : "border-white/50 text-neutral-100"
                             } outline-none `}
@@ -71,7 +71,7 @@ function ChangeLocation({ handleSetQuery }) {
                         <button
                             onClick={handleSearchClick}
                             className={`block py-2 ${
-                                settings.isDay
+                                isDay
                                     ? "text-neutral-800 border-neutral-600"
                                     : "text-neutral-100 border-white/50"
                             }  hover:bg-white/10 cursor-pointer rounded-md border  text-lg text-center`}

@@ -1,15 +1,15 @@
 import { useContext, useEffect, useReducer, useRef, useState } from "react";
 
-import CurrentStats from "./CurrentStats.jsx";
-import ForecastCard from "./ForcastCard.jsx";
+import ForecastCard from "./WeatherForecast.jsx";
 import useFetchData from "./Hooks.js";
 import TodayForecast from "./TodayForcast.jsx";
 import Background from "./Background.jsx";
-import { CancelIcon, GradientText } from "./Utilities.jsx";
-import { settingsReducer } from "./SettingsReducer.js";
-import { Settings } from "./SettingsContext.js";
-import { Icons } from "./assets/index.js";
+import { CancelIcon, ErrorOccured, GradientText } from "./Utilities.jsx";
+import { weatherReducer } from "./Reducers.js";
+import { Actions, Weather } from "./Context.js";
 import ChangeLocation from "./ChangeLocation.jsx";
+import CurrentWeather from "./CurrentWeather.jsx";
+import WeatherForecast from "./WeatherForecast.jsx";
 
 const options = {
     weekday: "long",
@@ -18,146 +18,65 @@ const options = {
 };
 function App() {
     const [query, setQuery] = useState("New Delhi");
-    const [settings, dispatch] = useReducer(settingsReducer, { isDay: 0 });
-
+    const [store, dispatch] = useReducer(weatherReducer, {
+        isDay: 0,
+        loading: true,
+        weather: null,
+        today_forecast: false,
+        hour_forecast_index: 0,
+    });
     const {
-        data: weather,
-        loading: weatherLoading,
+        data,
+        loading: dataLoading,
         error,
         clearError,
     } = useFetchData("/forecast.json", { q: query, days: 5 });
-    const currentTime = weather?.location.localtime;
 
     useEffect(() => {
-        if (!weatherLoading && weather) {
-            dispatch({ type: "IS_DAY", isDay: weather.current.is_day });
+        if (dataLoading == false && data != null) {
+            dispatch({ type: "IS_DAY", isDay: data.current.is_day });
+            dispatch({ type: "SET_DATA", weather: { ...data } });
+            console.log("Refreshed");
         }
-    }, [weather, weatherLoading]);
-
-    const equalHours = (t1, t2) => {
-        const d1 = new Date(t1);
-        const d2 = new Date(t2);
-        return d1.getHours() == d2.getHours();
-    };
+        return () => {
+            dispatch({ type: "LOADING" });
+            console.log("Reloading");
+        };
+    }, [data]);
 
     const handleSetQuery = (location) => {
         setQuery(location);
     };
-    return (
-        <Settings value={settings}>
+    return store.loading ? null : (
+        <Weather value={store}>
             <div className="relative w-screen h-dvh select-none overflow-x-hidden">
                 <Background />
-                {error?.message && (
-                    <ErrorOccured
-                        clearError={clearError}
-                        message={error?.message ?? "Something went Wrong !"}
-                    />
-                )}
-                <ChangeLocation handleSetQuery={handleSetQuery} />
-                {!weatherLoading && (
-                    <div
-                        className={` ${
-                            settings.isDay
-                                ? "md:bg-[url('../public/big_clean_weather.jpg')] max-md:bg-[url('../public/small_day_clean.jpg')] text-neutral-900"
-                                : "md:bg-[url('../public/big_night_clean.jpg')] max-md:bg-[url('../public/small_night_clean.jpg')] text-neutral-100"
-                        }   bg-cover h-full  overflow-auto`}
-                    >
-                        <div className="relative p-4 lg:w-3/5 lg:mx-auto">
-                            <LocationDate location={weather.location} />
-                            <div className="flex flex-col max-md:gap-8 md:flex-row gap-4 justify-between items-center  ">
-                                <CurrentTemprature
-                                    icon={
-                                        Icons[weather.current.condition.code][
-                                            settings.isDay
-                                        ]
-                                    }
-                                    text={weather.current.condition.text}
-                                    temp={Math.round(weather.current.temp_c)}
-                                />
-                                <Wrapper>
-                                    <CurrentStats
-                                        forecast={
-                                            weather.forecast.forecastday[0].day
-                                        }
-                                    />
-                                </Wrapper>
-                            </div>
-                            <div className="max-md:hidden">
-                                <h1 className="font-medium text-2xl my-4">
-                                    Today's Weather
-                                </h1>
-                                <div className="flex gap-4 h-auto justify-evenly overflow-auto scroll-smooth">
-                                    {weather.forecast.forecastday[0].hour.map(
-                                        (item) => {
-                                            return (
-                                                <TodayForecast
-                                                    key={item.time}
-                                                    forecast={item}
-                                                    outlined={equalHours(
-                                                        item.time,
-                                                        currentTime
-                                                    )}
-                                                />
-                                            );
-                                        }
-                                    )}
-                                </div>
-                            </div>
-                            <h1 className="font-medium text-2xl my-4">
-                                Next 5 Days
-                            </h1>
-                            <div className="flex md:flex-col gap-4 overflow-auto scroll-smooth">
-                                {weather.forecast.forecastday.map((item) => {
-                                    return (
-                                        <ForecastCard
-                                            key={item.date}
-                                            forecast={item.day}
-                                            date={item.date}
-                                        />
-                                    );
-                                })}
-                            </div>
-                        </div>
+                <ErrorOccured
+                    clearError={clearError}
+                    message={error?.message}
+                />
+                <div
+                    className={` ${
+                        store.isDay
+                            ? "md:bg-[url('./big_clean_weather.jpg')] max-md:bg-[url('./small_day_clean.jpg')] text-neutral-900"
+                            : "md:bg-[url('./big_night_clean.jpg')] max-md:bg-[url('./small_night_clean.jpg')] text-neutral-100"
+                    } relative   bg-cover h-full  overflow-auto`}
+                >
+                    <ChangeLocation handleSetQuery={handleSetQuery} />
+                    <div className="relative p-4 lg:w-3/5 lg:mx-auto">
+                        <LocationDate location={data.location} />
+                        <CurrentWeather weather={data} />
+                        <TodayForecast />
+                        <Actions value={dispatch}>
+                            <WeatherForecast />
+                        </Actions>
                     </div>
-                )}
-            </div>
-        </Settings>
-    );
-}
-
-function Wrapper({ children }) {
-    const settings = useContext(Settings);
-
-    return (
-        <div
-            className={`w-full ${
-                settings.isDay
-                    ? "bg-white/10 text-neutral-900 border border-white"
-                    : "bg-black/10 "
-            }  text-neutral-100  backdrop-blur-sm animate-appear-left  p-4 rounded-md`}
-        >
-            {children}
-        </div>
-    );
-}
-
-function CurrentTemprature({ icon, text = "Mostly Sunny", temp = "21" }) {
-    return (
-        <div className="flex w-full items-center gap-4 md:my-4 ">
-            <div className="w-1/2 flex justify-center items-center animate-fade-up">
-                {<img className="w-full lg:scale-150 scale-110" src={icon} />}
-            </div>
-            <div className="w-1/2 flex flex-col justify-center items-center animate-fade-up">
-                <div className="text-6xl font-thin ">
-                    <GradientText>{temp}&deg;C</GradientText>
                 </div>
-                <span className="text-sm md:text-lg font-light block text-center">
-                    {text}
-                </span>
             </div>
-        </div>
+        </Weather>
     );
 }
+
 function LocationDate({ location }) {
     const place = location.name + ", " + location.country;
     const current = new Date(location.localtime);
@@ -168,38 +87,6 @@ function LocationDate({ location }) {
                 <GradientText>{place}</GradientText>
             </div>
             <div className="  italic font-medium text-sm">{date}</div>
-        </div>
-    );
-}
-
-function ErrorOccured({ message, timeout = 5000, clearError }) {
-    const timeoutRef = useRef(null);
-    timeoutRef.current = setTimeout(() => {
-        handleClose();
-    }, timeout);
-    const handleClose = () => {
-        clearTimeout(timeoutRef.current);
-        clearError();
-    };
-    console.log(message);
-    const settings = useContext(Settings);
-    return (
-        <div
-            className={`absolute right-0 bottom-8 z-20 ${
-                settings.isDay
-                    ? "bg-white/30 text-neutral-800"
-                    : "bg-black/30 text-neutral-100"
-            } backdrop-blur-sm  w-fit p-4 rounded-l-md flex items-start justify-end duration-200 animate-slide-left `}
-        >
-            <p>{message}</p>
-            <span
-                onClick={handleClose}
-                className={`ml-6 mr-3 cursor-pointer ${
-                    settings.isDay ? "fill-black" : "fill-white "
-                }`}
-            >
-                <CancelIcon />
-            </span>
         </div>
     );
 }
