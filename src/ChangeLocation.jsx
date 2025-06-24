@@ -23,7 +23,7 @@ function ChangeLocation({ handleSetQuery }) {
         <>
             <div
                 onClick={handleOpenSearch}
-                className={`absolute ${
+                className={`absolute top-0 ${
                     openSearch ? "hidden" : ""
                 } top-6 right-4 md:top-6 z-10 size-[40px] flex items-center justify-center rounded-full hover:bg-white/10 ${
                     isDay ? "fill-neutral-800" : "fill-neutral-100"
@@ -40,7 +40,7 @@ function ChangeLocation({ handleSetQuery }) {
             </div>
 
             <div
-                className={`absolute ${
+                className={`fixed top-0 ${
                     openSearch ? "translate-y-0" : "-translate-y-full"
                 } duration-200 ease-out w-screen h-dvh ${
                     isDay ? "bg-white/10 " : "bg-black/10"
@@ -57,6 +57,7 @@ function ChangeLocation({ handleSetQuery }) {
                     </div>
                     <div className="w-full md:w-2/3 lg:w-1/2 flex flex-col gap-4">
                         <input
+                            autoFocus={true}
                             type="text"
                             value={input}
                             onChange={(e) => {

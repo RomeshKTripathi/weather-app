@@ -12,12 +12,9 @@ function WeatherForecast() {
             type: "HOUR_FORECAST",
             forecast_day_index: index,
         });
+        console.log("Forcasting : ", index);
     };
-    const closeForecast = (index) => {
-        dispatch({
-            type: "NO_HOURLY_FORECAST",
-        });
-    };
+
     return (
         <>
             <h1 className="font-medium text-2xl my-4">
@@ -28,18 +25,13 @@ function WeatherForecast() {
                 {weather.forecast.forecastday.map((item, index) => {
                     return (
                         <ForecastCard
-                            onclick={
-                                forecast_day_index === index &&
-                                today_forecast == true
-                                    ? closeForecast
-                                    : handleForecast
-                            }
+                            onclick={handleForecast}
                             key={item.date}
                             forecast={item.day}
                             date={item.date}
                             index={index}
                             highlight={
-                                today_forecast && forecast_day_index === index
+                                today_forecast && forecast_day_index == index
                             }
                         />
                     );
@@ -90,7 +82,6 @@ function ForecastCard({ forecast, date, onclick, index, highlight = false }) {
         <>
             <div
                 onClick={() => {
-                    console.log("Clicked - ", index);
                     onclick(index);
                 }}
                 className={`flex shrink-0 w-full sm:w-2/3 md:w-full animate-appear-up box-border justify-evenly items-center p-1 rounded-md duration-500  ${
@@ -99,7 +90,7 @@ function ForecastCard({ forecast, date, onclick, index, highlight = false }) {
                             ? "bg-gradient-to-br from-blue-950/80 to-violet-900/80 text-neutral-100"
                             : "bg-blue-400/10 text-blue-900 "
                         : highlight
-                        ? "bg-white/30"
+                        ? "bg-white/10"
                         : "max-md:bg-black/10"
                 } backdrop-blur-sm `}
             >

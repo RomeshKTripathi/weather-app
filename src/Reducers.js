@@ -14,14 +14,9 @@ export function weatherReducer(state, action) {
         case "HOUR_FORECAST":
             return {
                 ...state,
-                today_forecast: true,
                 forecast_day_index: action.forecast_day_index,
             };
-        case "NO_HOURLY_FORECAST":
-            return {
-                ...state,
-                today_forecast: false,
-            };
+
         case "LOADING":
             return {
                 ...state,

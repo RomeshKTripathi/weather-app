@@ -1,15 +1,14 @@
 import { useContext, useEffect, useReducer, useRef, useState } from "react";
 
-import ForecastCard from "./WeatherForecast.jsx";
 import useFetchData from "./Hooks.js";
-import TodayForecast from "./TodayForcast.jsx";
 import Background from "./Background.jsx";
-import { CancelIcon, ErrorOccured, GradientText } from "./Utilities.jsx";
+import { ErrorOccured, GradientText } from "./Utilities.jsx";
 import { weatherReducer } from "./Reducers.js";
 import { Actions, Weather } from "./Context.js";
 import ChangeLocation from "./ChangeLocation.jsx";
 import CurrentWeather from "./CurrentWeather.jsx";
 import WeatherForecast from "./WeatherForecast.jsx";
+import DayForecast from "./DayForcast.jsx";
 
 const options = {
     weekday: "long",
@@ -22,8 +21,8 @@ function App() {
         isDay: 0,
         loading: true,
         weather: null,
-        today_forecast: false,
-        hour_forecast_index: 0,
+        today_forecast: true,
+        forecast_day_index: 0,
     });
     const {
         data,
@@ -60,13 +59,13 @@ function App() {
                         store.isDay
                             ? "md:bg-[url('../public/big_clean_weather.jpg')] max-md:bg-[url('../public/small_day_clean.jpg')] text-neutral-900"
                             : "md:bg-[url('../public/big_night_clean.jpg')] max-md:bg-[url('../public/small_night_clean.jpg')] text-neutral-100"
-                    } relative   bg-cover h-full  overflow-auto`}
+                    } relative w-full  bg-cover h-full  overflow-auto`}
                 >
                     <ChangeLocation handleSetQuery={handleSetQuery} />
                     <div className="relative p-4 lg:w-3/5 lg:mx-auto">
                         <LocationDate location={data.location} />
                         <CurrentWeather weather={data} />
-                        <TodayForecast />
+                        <DayForecast />
                         <Actions value={dispatch}>
                             <WeatherForecast />
                         </Actions>
