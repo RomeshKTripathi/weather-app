@@ -34,7 +34,7 @@ function App() {
 
     useEffect(() => {
         if (dataLoading == false && data != null) {
-            dispatch({ type: "IS_DAY", isDay: data.current.is_day });
+            dispatch({ type: "IS_DAY", isDay: 0 });
             dispatch({ type: "SET_DATA", weather: { ...data } });
             console.log("Refreshed");
         }

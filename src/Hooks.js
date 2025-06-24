@@ -26,7 +26,10 @@ const useFetchData = (endpoint, options) => {
                 ...options,
             },
         })
-            .then((res) => setData(res.data))
+            .then((res) => {
+                setData(res.data);
+                console.log(res.data);
+            })
             .catch((err) => setError(err))
             .finally(() => setLoading(false));
     }, [endpoint, options.q]);

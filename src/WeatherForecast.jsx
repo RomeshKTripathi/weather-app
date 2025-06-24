@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { condition, Icons, style } from "./assets";
 import { Actions, Weather } from "./Context";
+import { Headings } from "./Utilities";
 
 function WeatherForecast() {
     const { weather, today_forecast, forecast_day_index } = useContext(Weather);
@@ -19,9 +20,11 @@ function WeatherForecast() {
     };
     return (
         <>
-            <h1 className="font-medium text-2xl my-4">Next 5 Days</h1>
+            <h1 className="font-medium text-2xl my-4">
+                <Headings>Next 5 Days</Headings>
+            </h1>
 
-            <div className="flex md:flex-col gap-4 overflow-auto scroll-smooth">
+            <div className="flex items-center flex-col gap-4 overflow-auto scroll-smooth">
                 {weather.forecast.forecastday.map((item, index) => {
                     return (
                         <ForecastCard
@@ -35,7 +38,7 @@ function WeatherForecast() {
                             forecast={item.day}
                             date={item.date}
                             index={index}
-                            outlined={
+                            highlight={
                                 today_forecast && forecast_day_index === index
                             }
                         />
@@ -48,7 +51,7 @@ function WeatherForecast() {
 
 export default WeatherForecast;
 
-function ForecastCard({ forecast, date, onclick, index, outlined = false }) {
+function ForecastCard({ forecast, date, onclick, index, highlight = false }) {
     const { isDay } = useContext(Weather);
     const {
         avgtemp_c,
@@ -67,6 +70,20 @@ function ForecastCard({ forecast, date, onclick, index, outlined = false }) {
         "Friday",
         "Saturday",
     ];
+    const month = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sept",
+        "Oct",
+        "Nov",
+        "Dec",
+    ];
     const currentDate = new Date(date);
 
     return (
@@ -76,23 +93,39 @@ function ForecastCard({ forecast, date, onclick, index, outlined = false }) {
                     console.log("Clicked - ", index);
                     onclick(index);
                 }}
-                className={`flex shrink-0 animate-appear-up box-border max-md:flex-col justify-evenly md:w-full items-center p-2 rounded-md  border-4  ${
-                    outlined ? " border-yellow-400/70" : "border-transparent"
-                }  ${
-                    isDay ? "max-md:bg-yellow-400/20" : "max-md:bg-black/10"
-                } backdrop-blur-sm`}
+                className={`flex shrink-0 w-full sm:w-2/3 md:w-full animate-appear-up box-border justify-evenly items-center p-1 rounded-md duration-500  ${
+                    isDay
+                        ? highlight
+                            ? "bg-gradient-to-br from-blue-950/80 to-violet-900/80 text-neutral-100"
+                            : "bg-blue-400/10 text-blue-900 "
+                        : highlight
+                        ? "bg-white/30"
+                        : "max-md:bg-black/10"
+                } backdrop-blur-sm `}
             >
                 <div>
-                    <div className="font-medium  md:hidden">
+                    <div className="font-medium ">
                         {weekday[currentDate.getDay()].slice(0, 3)}
                     </div>
-                    <div className="font-medium  hidden md:block">
-                        {weekday[currentDate.getDay()]}
+
+                    <div className="max-md:text-xs">
+                        {currentDate.getDate() +
+                            " " +
+                            month[currentDate.getMonth()] +
+                            ", " +
+                            currentDate.getFullYear()}
                     </div>
-                    <div className="max-md:hidden">{date}</div>
                 </div>
                 <div>
-                    <img src={Icons[code][isDay]} alt="Weather Icon" />
+                    <img
+                        className={`duration-500 transition-all ${
+                            highlight
+                                ? "max-md:scale-150 scale-125"
+                                : "max-md:scale-125 scale-110"
+                        }`}
+                        src={Icons[code][isDay]}
+                        alt="Weather Icon"
+                    />
                 </div>
                 <div className="max-md:hidden">
                     <div>{mintemp_c}&deg;C</div>
@@ -110,7 +143,7 @@ function ForecastCard({ forecast, date, onclick, index, outlined = false }) {
                     <div>{daily_chance_of_rain}%</div>
                     <div>Rain</div>
                 </div>
-                <div className="md:hidden text-center">
+                <div className="text-center md:hidden ">
                     {Math.round(mintemp_c)}-{Math.round(maxtemp_c)}&deg;C
                 </div>
             </div>

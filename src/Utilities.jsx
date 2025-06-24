@@ -9,7 +9,7 @@ export function Wrapper({ children }) {
             className={`w-full ${
                 isDay
                     ? "bg-white/10 text-neutral-900 border border-white"
-                    : "bg-black/10 "
+                    : "bg-gradient-to-br bg-black/20 to-gray-600/20 "
             }  text-neutral-100  backdrop-blur-sm animate-appear-left  p-4 rounded-md`}
         >
             {children}
@@ -24,7 +24,22 @@ export function GradientText({ children }) {
             className={`bg-gradient-to-r ${
                 isDay
                     ? "from-[#020024] via-[#090979] to-[#0068E8]"
-                    : "from-[#FAF200] via-[#FF9100] to-[#E05600]"
+                    : "from-amber-400 via-orange-300 to-red-600"
+            } bg-clip-text text-transparent`}
+        >
+            {children}
+        </span>
+    );
+}
+
+export function Headings({ children }) {
+    const { isDay } = useContext(Weather);
+    return (
+        <span
+            className={`font-bold text-2xl md:text-3xl ${
+                isDay
+                    ? "bg-gradient-to-r from-blue-900 via-violet-600 to-indigo-500"
+                    : "bg-gradient-to-r from-amber-500 to-red-600"
             } bg-clip-text text-transparent`}
         >
             {children}

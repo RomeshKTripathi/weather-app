@@ -30,7 +30,7 @@ function CurrentStats({ forecast }) {
 function Entry({ value, title, temp }) {
     return (
         <div>
-            <span className="text-lg font-light md:text-xl block">
+            <span className="md:text-2xl font-thin text-lg sm:text-xl block">
                 {value}
                 {temp && <span>&deg;C</span>}
             </span>

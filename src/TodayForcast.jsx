@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { Weather } from "./Context";
-import { equalHours } from "./Utilities";
+import { equalHours, GradientText, Headings } from "./Utilities";
+import { Icons } from "./assets";
 
 function TodayForecast() {
     const { isDay, weather, today_forecast, forecast_day_index, loading } =
@@ -11,11 +12,13 @@ function TodayForecast() {
     return (
         <div className={`${today_forecast ? "" : "max-md:hidden"}`}>
             <h1 className="font-medium text-2xl my-4">
-                {forecast_day_index == 0
-                    ? "Today's Weather"
-                    : "Weather on " +
-                      weather.forecast.forecastday[forecast_day_index ?? 0]
-                          .date}
+                <Headings>
+                    {forecast_day_index == 0
+                        ? "Today's Weather"
+                        : "Weather on " +
+                          weather.forecast.forecastday[forecast_day_index ?? 0]
+                              .date}
+                </Headings>
             </h1>
             <div className="flex gap-4 h-auto justify-evenly overflow-auto scroll-smooth">
                 {weather.forecast.forecastday[forecast_day_index ?? 0].hour.map(
@@ -24,7 +27,7 @@ function TodayForecast() {
                             <HourCard
                                 key={item.time}
                                 forecast={item}
-                                outlined={
+                                highlight={
                                     forecast_day_index == 0 &&
                                     equalHours(item.time, currentTime)
                                 }
@@ -39,25 +42,29 @@ function TodayForecast() {
 
 export default TodayForecast;
 
-function HourCard({ forecast, outlined }) {
+function HourCard({ forecast, highlight }) {
     const { temp_c, time } = forecast;
-    const { icon, text } = forecast.condition;
+    const { code } = forecast.condition;
     const current = new Date(time);
     const currentTime = current.getHours() + ":" + current.getMinutes();
     const { isDay } = useContext(Weather);
     return (
         <div
-            className={`flex relative animate-slide-left shrink-0 flex-col items-center p-2 rounded-md ${
+            className={`flex relative animate-slide-left shrink-0 flex-col items-center p-1 rounded-md ${
                 isDay
-                    ? "bg-white/30 text-neutral-800"
+                    ? highlight
+                        ? "bg-blue-900/80 text-neutral-100"
+                        : "bg-white/30 text-neutral-800"
+                    : highlight
+                    ? "bg-gradient-to-br from-yellow-400/80 to-orange-600/80"
                     : "bg-black/30 text-neutral-200"
             }  backdrop-blur-md ${
-                outlined ? "border-yellow-400" : "border-transparent"
-            } border-4`}
+                highlight ? "border-yellow-400" : "border-transparent"
+            }`}
         >
-            <span className="font-medium">{currentTime}</span>
-            <img className="" src={icon} alt="Weather Icon" />
-            <span className="font-light ">{temp_c}&deg;C</span>
+            <span className="font-thin ">{temp_c}&deg;C</span>
+            <img className="" src={Icons[code][1]} alt="Weather Icon" />
+            <span className="">{currentTime}</span>
         </div>
     );
 }
