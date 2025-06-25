@@ -21,7 +21,7 @@ function WeatherForecast() {
                 <Headings>Next 5 Days</Headings>
             </h1>
 
-            <div className="flex items-center flex-col gap-4 overflow-auto scroll-smooth">
+            <div className="flex items-center flex-col gap-4 overflow-auto scroll-smooth py-1">
                 {weather.forecast.forecastday.map((item, index) => {
                     return (
                         <ForecastCard
