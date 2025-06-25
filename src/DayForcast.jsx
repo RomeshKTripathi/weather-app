@@ -52,11 +52,20 @@ export default DayForecast;
 function HourCard({ forecast, highlight, astro }) {
     const { temp_c, time } = forecast;
     const { code } = forecast.condition;
+    const systemTime = new Date(Date.now());
     const current = new Date(time);
     const { sunrise, sunset } = astro;
+    const options = {
+        hour: "numeric",
+        minute: "numeric",
+        hourCycle: "h12",
+    };
     const hour = current.getHours();
     const day = hour < sunrise || hour >= sunset ? 0 : 1;
-    const currentTime = current.getHours() + ":" + current.getMinutes();
+    const currentTime = current
+        .toLocaleTimeString("en-In", options)
+        .toUpperCase();
+
     const { isDay } = useContext(Weather);
     return (
         <div
@@ -72,11 +81,17 @@ function HourCard({ forecast, highlight, astro }) {
         >
             <span className="font-thin ">{temp_c}&deg;C</span>
             <img
-                className={`size-20 `}
+                className={`size-16`}
                 src={Icons[code][day]}
                 alt="Weather Icon"
             />
-            <span className="">{currentTime}</span>
+            <span className="text-sm">
+                {highlight
+                    ? systemTime
+                          .toLocaleTimeString("en-In", options)
+                          .toUpperCase()
+                    : currentTime}
+            </span>
         </div>
     );
 }
