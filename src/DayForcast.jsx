@@ -6,15 +6,21 @@ import { Icons } from "./assets";
 function DayForecast() {
     const { isDay, weather, today_forecast, forecast_day_index, loading } =
         useContext(Weather);
-    const forecast = weather.forecast.forecastday[forecast_day_index ?? 0];
-    const { astro } = forecast;
+
+    const { astro } = weather.forecast.forecastday[forecast_day_index];
     const sunrise = Number(astro.sunrise.slice(0, 2));
     const sunset = Number(astro.sunset.slice(0, 2)) + 12;
-    console.log("Foresting : ", forecast_day_index);
-
-    console.log(Number(astro.sunrise.slice(0, 2)));
-
     const currentTime = new Date(weather.location.localtime);
+    console.log(currentTime);
+
+    const forecast =
+        forecast_day_index == 0 && currentTime.getHours() > 2
+            ? weather.forecast.forecastday[forecast_day_index].hour.slice(
+                  currentTime.getHours() - 1
+              )
+            : weather.forecast.forecastday[forecast_day_index].hour;
+    console.log("Hours to forecast", forecast);
+
     return (
         <div className={`${today_forecast ? "" : "max-md:hidden"}`}>
             <h1 className="font-medium text-2xl my-4">
@@ -22,21 +28,17 @@ function DayForecast() {
                     {forecast_day_index === 0
                         ? "Today's Weather"
                         : "Weather on " +
-                          weather.forecast.forecastday[forecast_day_index ?? 0]
-                              .date}
+                          weather.forecast.forecastday[forecast_day_index].date}
                 </Headings>
             </h1>
-            <div className="flex gap-4 h-auto justify-evenly overflow-auto scroll-smooth">
-                {forecast.hour.map((item, index) => {
+            <div className="flex gap-4 h-auto  overflow-auto scroll-smooth">
+                {forecast.map((item, index) => {
                     return (
                         <HourCard
                             key={item.time}
                             forecast={item}
                             astro={{ sunrise, sunset }}
-                            highlight={
-                                currentTime.getHours() == index &&
-                                forecast_day_index == 0
-                            }
+                            highlight={index == 1 && forecast_day_index == 0}
                         />
                     );
                 })}
@@ -64,12 +66,16 @@ function HourCard({ forecast, highlight, astro }) {
                         ? "bg-blue-900/80 text-neutral-100"
                         : "bg-white/30 text-neutral-800"
                     : highlight
-                    ? "bg-gradient-to-br from-yellow-400/80 to-orange-600/80"
-                    : "bg-black/20 text-neutral-200"
-            }  backdrop-blur-md `}
+                    ? "bg-gradient-to-br from-orange-600/60 to-yellow-500/60"
+                    : "bg-neutral-700/10  text-neutral-200"
+            }  backdrop-blur-sm `}
         >
             <span className="font-thin ">{temp_c}&deg;C</span>
-            <img className="" src={Icons[code][day]} alt="Weather Icon" />
+            <img
+                className={`size-20 `}
+                src={Icons[code][day]}
+                alt="Weather Icon"
+            />
             <span className="">{currentTime}</span>
         </div>
     );

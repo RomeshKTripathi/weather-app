@@ -28,7 +28,7 @@ const useFetchData = (endpoint, options) => {
         })
             .then((res) => {
                 setData(res.data);
-                console.log(res.data);
+                // console.log(res.data);
             })
             .catch((err) => setError(err))
             .finally(() => setLoading(false));

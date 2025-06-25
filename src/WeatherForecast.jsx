@@ -84,7 +84,7 @@ function ForecastCard({ forecast, date, onclick, index, highlight = false }) {
                 onClick={() => {
                     onclick(index);
                 }}
-                className={`flex shrink-0 w-full sm:w-2/3 md:w-full animate-appear-up box-border justify-evenly items-center p-1 rounded-md duration-500  ${
+                className={`flex shrink-0 w-full sm:w-2/3 md:w-full animate-appear-up box-border justify-evenly items-center p-1 rounded-md duration-500 ${
                     isDay
                         ? highlight
                             ? "bg-gradient-to-br from-blue-950/80 to-violet-900/80 text-neutral-100"
