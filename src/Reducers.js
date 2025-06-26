@@ -23,11 +23,6 @@ export function weatherReducer(state, action) {
                 ...state,
                 forecast_day_index: action.forecast_day_index,
             };
-        case "SET_COORDS":
-            return {
-                ...state,
-                coords: action.coords,
-            };
         case "LOADING":
             return {
                 ...state,

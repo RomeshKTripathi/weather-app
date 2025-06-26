@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-import { Actions, Weather } from "./Context";
+import { Actions } from "./Context";
 
 const url = "http://api.weatherapi.com/v1";
 const api = axios.create({
@@ -17,22 +17,21 @@ const useFetchData = (endpoint, options) => {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const { coords, query } = options;
+    const { query } = options;
     useEffect(() => {
         api.get(url + endpoint, {
             params: {
                 key: "3ff9e951a96c46d0ba632912252106",
                 ...options,
-                q: coords ? coords.latitude + "," + coords.longitude : query,
             },
         })
             .then((res) => {
                 setData(res.data);
-                // console.log(res.data);
+                console.log(res.data);
             })
             .catch((err) => setError(err))
             .finally(() => setLoading(false));
-    }, [endpoint, options.q]);
+    }, [endpoint, options.q, query]);
     const clearError = () => {
         setError(null);
     };
@@ -79,8 +78,6 @@ export function useAutoUpdateLocation() {
         setError("");
     };
     const update = () => {
-        console.log("Updating your current Location ...");
-
         setLoading(true);
         if (!navigator.geolocation) {
             setError("Geolocation is not supported by this browser.");
@@ -93,7 +90,7 @@ export function useAutoUpdateLocation() {
             .then((position) => {
                 dispatch({
                     type: "SET_COORDS",
-                    coords: position.coords,
+                    query: `${position.latitude},${position.longitude}`,
                 });
             })
             .catch((err) => {
