@@ -4,11 +4,8 @@ import { Icons } from "./assets";
 import { Weather } from "./Context";
 import { GradientText, Wrapper } from "./Utilities";
 
-function CurrentWeather({}) {
-    // const weather = useContext(Weather);
-
+function CurrentWeather() {
     const { isDay, weather, loading } = useContext(Weather);
-    // console.log(weather);
 
     return (
         !loading && (

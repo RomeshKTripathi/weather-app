@@ -1,11 +1,14 @@
+import { useContext } from "react";
 import { getSun } from "./Hooks";
 import { GradientText } from "./Utilities";
+import { Weather } from "./Context";
 
 function CurrentStats({ forecast }) {
     const { maxtemp_c, mintemp_c, daily_chance_of_rain, maxwind_mph } =
         forecast;
+    const { query, coords } = useContext(Weather);
 
-    const [sun, loading] = getSun();
+    const [sun, loading] = getSun({ query, coords });
 
     return (
         <div className="w-full  flex justify-between ">

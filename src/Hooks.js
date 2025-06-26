@@ -1,5 +1,6 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { Actions, Weather } from "./Context";
 
 const url = "http://api.weatherapi.com/v1";
 const api = axios.create({
@@ -16,12 +17,13 @@ const useFetchData = (endpoint, options) => {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
+    const { coords, query } = options;
     useEffect(() => {
         api.get(url + endpoint, {
             params: {
                 key: "3ff9e951a96c46d0ba632912252106",
                 ...options,
+                q: coords ? coords.latitude + "," + coords.longitude : query,
             },
         })
             .then((res) => {
@@ -39,43 +41,18 @@ const useFetchData = (endpoint, options) => {
 
 export default useFetchData;
 
-export function getCurrentWeather() {
-    const [currentWeather, setCurrentWeather] = useState({});
-    const [loading, setLoading] = useState(true);
-    useEffect(() => {
-        async function fetchWeather() {
-            axios
-                .get(url + "/forecast.json", {
-                    params: {
-                        days: 5,
-                        q: await userLocation(),
-                        key: "3ff9e951a96c46d0ba632912252106",
-                    },
-                })
-                .then((response) => {
-                    // console.log(response.data);
-                    setCurrentWeather(response.data);
-                })
-                .catch((err) => {
-                    console.log("Error occured:", err);
-                })
-                .finally(() => {
-                    setLoading(false);
-                });
-        }
-        fetchWeather();
-    }, []);
-    return [currentWeather, loading];
-}
-export function getSun() {
+export function getSun(options) {
     const [sun, setSun] = useState({});
     const [loading, setLoading] = useState(true);
+    const { query, coords } = options;
     useEffect(() => {
         async function fetchData() {
             axios
                 .get(url + "/astronomy.json", {
                     params: {
-                        q: await userLocation(),
+                        q: coords
+                            ? coords.latitude + "," + coords.longitude
+                            : query,
                         key: "3ff9e951a96c46d0ba632912252106",
                     },
                 })
@@ -94,21 +71,38 @@ export function getSun() {
     return [sun, loading];
 }
 
-async function userLocation() {
-    if (!navigator.geolocation) {
-        console.error("Geolocation is not supported by this browser.");
-        return "Agra";
-    }
+export function useAutoUpdateLocation() {
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+    const dispatch = useContext(Actions);
+    const clearError = () => {
+        setError("");
+    };
+    const update = () => {
+        console.log("Updating your current Location ...");
 
-    try {
-        const position = await new Promise((resolve, reject) => {
+        setLoading(true);
+        if (!navigator.geolocation) {
+            setError("Geolocation is not supported by this browser.");
+            setLoading(false);
+            return;
+        }
+        new Promise((resolve, reject) => {
             navigator.geolocation.getCurrentPosition(resolve, reject);
-        });
-
-        const { latitude, longitude } = position.coords;
-        return latitude + "," + longitude;
-    } catch (error) {
-        console.error("Error getting user location:", error);
-        return "Agra";
-    }
+        })
+            .then((position) => {
+                dispatch({
+                    type: "SET_COORDS",
+                    coords: position.coords,
+                });
+            })
+            .catch((err) => {
+                setError("Error getting user location", err);
+                console.log(err);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    };
+    return { update, loading, error, clearError };
 }

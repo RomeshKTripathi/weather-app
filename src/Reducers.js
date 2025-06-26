@@ -1,5 +1,10 @@
 export function weatherReducer(state, action) {
     switch (action.type) {
+        case "SET_QUERY":
+            return {
+                ...state,
+                query: action.query,
+            };
         case "IS_DAY":
             return {
                 ...state,
@@ -18,7 +23,11 @@ export function weatherReducer(state, action) {
                 ...state,
                 forecast_day_index: action.forecast_day_index,
             };
-
+        case "SET_COORDS":
+            return {
+                ...state,
+                coords: action.coords,
+            };
         case "LOADING":
             return {
                 ...state,
