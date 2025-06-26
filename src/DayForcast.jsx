@@ -4,14 +4,20 @@ import { equalHours, GradientText, Headings } from "./Utilities";
 import { Icons } from "./assets";
 
 function DayForecast() {
-    const { isDay, weather, today_forecast, forecast_day_index, loading } =
-        useContext(Weather);
+    const {
+        isDay,
+        weather,
+        today_forecast,
+        forecast_day_index,
+        loading,
+        time,
+        timezone,
+    } = useContext(Weather);
 
     const { astro } = weather.forecast.forecastday[forecast_day_index];
     const sunrise = Number(astro.sunrise.slice(0, 2));
     const sunset = Number(astro.sunset.slice(0, 2)) + 12;
-    const currentTime = new Date(weather.location.localtime);
-    console.log(currentTime);
+    const currentTime = new Date(time);
 
     const forecast =
         forecast_day_index == 0 && currentTime.getHours() > 2
@@ -19,7 +25,6 @@ function DayForecast() {
                   currentTime.getHours() - 1
               )
             : weather.forecast.forecastday[forecast_day_index].hour;
-    console.log("Hours to forecast", forecast);
 
     return (
         <div className={`${today_forecast ? "" : "max-md:hidden"}`}>
@@ -50,9 +55,10 @@ function DayForecast() {
 export default DayForecast;
 
 function HourCard({ forecast, highlight, astro }) {
+    const { time: localtime } = useContext(Weather);
     const { temp_c, time } = forecast;
     const { code } = forecast.condition;
-    const systemTime = new Date(Date.now());
+    const systemTime = new Date(localtime);
     const current = new Date(time);
     const { sunrise, sunset } = astro;
     const options = {
@@ -76,7 +82,7 @@ function HourCard({ forecast, highlight, astro }) {
                         : "bg-white/30 text-neutral-800"
                     : highlight
                     ? "bg-gradient-to-br from-orange-600/60 to-yellow-500/60"
-                    : "bg-neutral-700/10  text-neutral-200"
+                    : "bg-black/20  text-neutral-200"
             }  backdrop-blur-sm `}
         >
             <span className="font-thin ">{temp_c}&deg;C</span>
@@ -85,7 +91,7 @@ function HourCard({ forecast, highlight, astro }) {
                 src={Icons[code][day]}
                 alt="Weather Icon"
             />
-            <span className="text-sm">
+            <span className="text-xs sm:text-sm">
                 {highlight
                     ? systemTime
                           .toLocaleTimeString("en-In", options)

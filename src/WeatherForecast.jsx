@@ -12,7 +12,6 @@ function WeatherForecast() {
             type: "HOUR_FORECAST",
             forecast_day_index: index,
         });
-        console.log("Forcasting : ", index);
     };
 
     return (
@@ -84,14 +83,14 @@ function ForecastCard({ forecast, date, onclick, index, highlight = false }) {
                 onClick={() => {
                     onclick(index);
                 }}
-                className={`flex shrink-0 w-full sm:w-2/3 md:w-full animate-appear-up box-border justify-evenly items-center p-1 rounded-md duration-500 ${
+                className={` cursor-pointer flex shrink-0 w-full sm:w-2/3 md:w-full animate-appear-up box-border justify-evenly items-center p-1 rounded-md duration-500 ${
                     isDay
                         ? highlight
                             ? "bg-gradient-to-br from-blue-950/80 to-violet-900/80 text-neutral-100"
                             : "bg-blue-400/10 text-blue-900 "
                         : highlight
-                        ? "bg-white/10"
-                        : "max-md:bg-black/10"
+                        ? "bg-black/50"
+                        : "max-md:bg-black/20 bg-black/20"
                 } backdrop-blur-sm `}
             >
                 <div>

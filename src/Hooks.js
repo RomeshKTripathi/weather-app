@@ -18,8 +18,6 @@ const useFetchData = (endpoint, options) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        console.log("Getting Data");
-
         api.get(url + endpoint, {
             params: {
                 key: "3ff9e951a96c46d0ba632912252106",

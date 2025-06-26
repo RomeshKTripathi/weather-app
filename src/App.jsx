@@ -34,12 +34,11 @@ function App() {
     useEffect(() => {
         if (dataLoading == false && data != null) {
             dispatch({ type: "IS_DAY", isDay: data.current.is_day });
+            // dispatch({ type: "IS_DAY", isDay: 0 });
             dispatch({ type: "SET_DATA", weather: { ...data } });
-            console.log("Refreshed");
         }
         return () => {
             dispatch({ type: "LOADING" });
-            console.log("Reloading");
         };
     }, [data]);
 
@@ -58,7 +57,7 @@ function App() {
                     className={` ${
                         store.isDay
                             ? "md:bg-[url('../public/big_clean_weather.jpg')] max-md:bg-[url('../public/small_day_clean.jpg')] text-neutral-900"
-                            : "md:bg-[url('../public/big_night_clean.jpg')] max-md:bg-[url('../public/small_night_clean.jpg')] text-neutral-100"
+                            : "bg-[url('../public/clear_big_dark.jpg')] max-md:bg-[url('../public/day_clean.jpg')] text-neutral-100"
                     } relative w-full  bg-cover h-full  overflow-auto`}
                 >
                     <ChangeLocation handleSetQuery={handleSetQuery} />

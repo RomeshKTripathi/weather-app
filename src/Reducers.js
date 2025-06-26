@@ -10,6 +10,8 @@ export function weatherReducer(state, action) {
                 ...state,
                 weather: action.weather,
                 loading: false,
+                time: action.weather.location.localtime,
+                timezone: action.weather.location.tz_id,
             };
         case "HOUR_FORECAST":
             return {
