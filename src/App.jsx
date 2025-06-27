@@ -26,9 +26,7 @@ function App() {
         query: store.query,
         days: 5,
     });
-    useEffect(() => {
-        update();
-    }, []);
+
     useEffect(() => {
         if (dataLoading == false && data != null) {
             dispatch({ type: "IS_DAY", isDay: data.current.is_day });
@@ -38,6 +36,10 @@ function App() {
             dispatch({ type: "LOADING" });
         };
     }, [data]);
+
+    useEffect(() => {
+        update(dispatch);
+    }, []);
 
     return store.loading ? null : (
         <Weather value={store}>

@@ -9,9 +9,6 @@ const api = axios.create({
         key: "3ff9e951a96c46d0ba632912252106",
     },
 });
-// const authorization = {
-//     key: "3ff9e951a96c46d0ba632912252106",
-// };
 
 const useFetchData = (endpoint, options) => {
     const [data, setData] = useState(null);
@@ -19,6 +16,8 @@ const useFetchData = (endpoint, options) => {
     const [error, setError] = useState(null);
     const { query } = options;
     useEffect(() => {
+        console.log("Fetching Data For query:", query);
+
         api.get(url + endpoint, {
             params: {
                 key: "3ff9e951a96c46d0ba632912252106",
@@ -73,11 +72,11 @@ export function getSun(options) {
 export function useAutoUpdateLocation() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
-    const dispatch = useContext(Actions);
+
     const clearError = () => {
         setError("");
     };
-    const update = () => {
+    const update = (dispatch) => {
         setLoading(true);
         if (!navigator.geolocation) {
             setError("Geolocation is not supported by this browser.");
@@ -88,9 +87,15 @@ export function useAutoUpdateLocation() {
             navigator.geolocation.getCurrentPosition(resolve, reject);
         })
             .then((position) => {
+                console.log(position.coords);
+                console.log(
+                    "Exact pos:",
+                    `${position.coords.latitude},${position.coords.longitude}`
+                );
+
                 dispatch({
-                    type: "SET_COORDS",
-                    query: `${position.latitude},${position.longitude}`,
+                    type: "SET_QUERY",
+                    query: `${position.coords.latitude},${position.coords.longitude}`,
                 });
             })
             .catch((err) => {
