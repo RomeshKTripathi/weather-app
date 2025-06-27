@@ -79,7 +79,7 @@ function ChangeLocation() {
                     </div>
                     <button
                         onClick={handleAutoSearchClick}
-                        className="my-6 outline-none cursor-pointer px-4 py-2 font-medium rounded-md bg-yellow-600 text-white flex items-center gap-2 "
+                        className="my-6 outline-none cursor-pointer px-4 py-2 font-medium rounded-md bg-yellow-400 text-neutral-800 flex items-center gap-2 *:fill-neutral-800"
                     >
                         <span>Detect Location </span>
                         <svg
@@ -87,7 +87,6 @@ function ChangeLocation() {
                             height="24px"
                             viewBox="0 -960 960 960"
                             width="24px"
-                            fill="#e3e3e3"
                         >
                             <path d="M480-480q33 0 56.5-23.5T560-560q0-33-23.5-56.5T480-640q-33 0-56.5 23.5T400-560q0 33 23.5 56.5T480-480Zm0 294q122-112 181-203.5T720-552q0-109-69.5-178.5T480-800q-101 0-170.5 69.5T240-552q0 71 59 162.5T480-186Zm0 106Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q127 0 223.5 89T800-552q0 100-79.5 217.5T480-80Zm0-480Z" />
                         </svg>
@@ -112,10 +111,10 @@ function ChangeLocation() {
                                 isDay
                                     ? "text-neutral-800 border-neutral-600"
                                     : "text-neutral-100 border-white/50"
-                            }  hover:bg-white/10 cursor-pointer rounded-md border  text-lg text-center`}
+                            }  hover:bg-white/10 cursor-pointer rounded-md border flex items-center justify-center text-lg text-center`}
                             type="submit"
                         >
-                            Search Location
+                            <span>Search Location </span>
                         </button>
                     </div>
                 </div>

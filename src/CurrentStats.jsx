@@ -6,9 +6,9 @@ import { Weather } from "./Context";
 function CurrentStats({ forecast }) {
     const { maxtemp_c, mintemp_c, daily_chance_of_rain, maxwind_mph } =
         forecast;
-    const { query, coords } = useContext(Weather);
+    const { query } = useContext(Weather);
 
-    const [sun, loading] = getSun({ query, coords });
+    const [sun, loading] = getSun({ query });
 
     return (
         <div className="w-full  flex justify-between ">
